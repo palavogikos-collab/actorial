@@ -44,7 +44,7 @@ legacy: 6 HTML pages minimum, 118 KB, plus a cookie wall and a click-through per
 ## Run it
 
 ```
-git clone <this repo> && cd actorial
+git clone https://github.com/palavogikos-collab/actorial.git && cd actorial
 npm install
 npm run sites     # five mock sites on :4001 to :4005
 npm run demo      # a scripted agent completes five tasks across them
