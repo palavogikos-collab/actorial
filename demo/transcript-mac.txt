@@ -1,0 +1,51 @@
+
+TASK 1  "Find me a 27-inch monitor under 250 euro and add it to my cart"  (http://localhost:4001)
+
+  discover  http://localhost:4001/.well-known/agents.txt  ->  MCP at http://localhost:4001/mcp
+  tools     searchProducts, getProduct, checkStoreStock, addToCart, getCart
+  call      searchProducts({"query":"27","category":"monitors","maxPrice":250})
+            -> {"count":4,"products":[{"sku":"4212345","name":"LG 27MP450-B 27\" IPS FHD 75Hz","brand":"LG","price":149.9,"category":"monitors","inStock":true},{"sku":"4212346...
+  call      getProduct({"sku":"4212345"})
+            -> {"sku":"4212345","name":"LG 27MP450-B 27\" IPS FHD 75Hz","category":"monitors","brand":"LG","price":149.9,"size":27,"panel":"IPS","hz":75,"res":"1920x1080","spe...
+  call      getProduct({"sku":"4212346"})
+            -> {"sku":"4212346","name":"Samsung Odyssey G5 27\" VA QHD 165Hz","category":"monitors","brand":"Samsung","price":239,"size":27,"panel":"VA","hz":165,"res":"2560x1...
+  call      getProduct({"sku":"4212348"})
+            -> {"sku":"4212348","name":"AOC 27B2H 27\" IPS FHD 75Hz","category":"monitors","brand":"AOC","price":119,"size":27,"panel":"IPS","hz":75,"res":"1920x1080","specs":...
+  call      getProduct({"sku":"4212349"})
+            -> {"sku":"4212349","name":"Philips 275E1S 27\" IPS QHD 75Hz","category":"monitors","brand":"Philips","price":199,"size":27,"panel":"IPS","hz":75,"res":"2560x1440"...
+  reason    best value under 250: Philips 275E1S 27" IPS QHD 75Hz (2560x1440, IPS, 75Hz) at 199 EUR
+  call      addToCart({"sku":"4212349"})
+            -> {"error":"confirmation required","confirm":true,"tool":"addToCart","input":{"sku":"4212349","qty":1}}
+  CONFIRM   Plaisio wants to run addToCart for Philips 275E1S 27" IPS QHD 75Hz. Allow?
+  user      yes
+  call      addToCart({"sku":"4212349"})
+            -> {"ok":true,"cart":[{"sku":"4212349","qty":1}],"total":199}
+
+  done in 94 ms, 8 tool calls, 5,333 bytes over the wire
+  legacy: 6 HTML pages minimum, 117,805 bytes, plus a cookie wall and a click-through per page
+  ratio: 22.1x fewer bytes, and none of them need parsing
+
+TASK 2  "Can I get a PAX 200 frame delivered to 15236 before Saturday, and what will it cost? If not, hold one at Kifisia."  (http://localhost:4002)
+
+  discover  http://localhost:4002/.well-known/agents.txt  ->  MCP at http://localhost:4002/mcp
+  call      searchProducts({"query":"pax 200"})
+            -> {"products":[{"article":"902.145.63","name":"PAX Wardrobe frame 200x58x236 white","price":240,"weightKg":62}]}
+  call      getDeliveryOptions({"postcode":"15236","articles":["902.145.63"]})
+            -> {"postcode":"15236","zone":"attica","totalWeightKg":62,"feeEur":59,"slots":["2026-10-01","2026-10-02","2026-10-03"]}
+  reason    earliest slot 2026-10-01, Saturday is 2026-10-03: delivery works
+  answer    Yes. 59 EUR delivery, earliest 2026-10-01.
+
+  done, 2 tool calls
+
+TASK 3  "Is the ThinkPad E14 in stock at Cosmodata, and what's the router that goes with it?"  (http://localhost:4003)
+
+  discover  http://localhost:4003/.well-known/agents.txt  ->  MCP at http://localhost:4003/mcp
+  tools     searchProducts, getProduct, checkStock, addToCart, getCart   (generated from 4 checkboxes, no code written by the merchant)
+  call      searchProducts({"query":"thinkpad e14"})
+            -> {"products":[{"id":"CD-1001","name":"Lenovo ThinkPad E14 Gen 6 Ryzen 5 16GB 512GB","price":799}]}
+  call      checkStock({"id":"CD-1001"})
+            -> {"id":"CD-1001","stock":3,"leadDays":0}
+  call      searchProducts({"query":"router"})
+            -> {"products":[{"id":"CD-1003","name":"TP-Link Archer AX55 WiFi 6 router","price":69}]}
+
+  done, 4 tool calls

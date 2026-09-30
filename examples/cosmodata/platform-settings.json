@@ -1,0 +1,6 @@
+{
+  "site": "Cosmodata (mock)",
+  "description": "IT reseller in Athens. Laptops, components, networking, office IT. B2B and B2C.",
+  "baseUrl": "http://localhost:4003",
+  "enabled": ["search", "product", "stock", "cart"]
+}

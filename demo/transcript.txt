@@ -1,0 +1,85 @@
+
+TASK 1  "Find me a 27-inch monitor under 250 euro and add it to my cart"  (http://localhost:4001)
+
+  discover  http://localhost:4001/.well-known/agents.txt  ->  MCP at http://localhost:4001/mcp
+  tools     search_catalog, get_product, check_store_stock, update_cart, get_cart
+  call      search_catalog({"query":"27","category":"monitors","maxPrice":250})
+            -> {"count":4,"products":[{"sku":"4212345","name":"LG 27MP450-B 27\" IPS FHD 75Hz","brand":"LG","price":149.9,"category":"monitors","inStock":true},{"sku":"4212346...
+  call      get_product({"sku":"4212345"})
+            -> {"sku":"4212345","name":"LG 27MP450-B 27\" IPS FHD 75Hz","category":"monitors","brand":"LG","price":149.9,"size":27,"panel":"IPS","hz":75,"res":"1920x1080","spe...
+  call      get_product({"sku":"4212346"})
+            -> {"sku":"4212346","name":"Samsung Odyssey G5 27\" VA QHD 165Hz","category":"monitors","brand":"Samsung","price":239,"size":27,"panel":"VA","hz":165,"res":"2560x1...
+  call      get_product({"sku":"4212348"})
+            -> {"sku":"4212348","name":"AOC 27B2H 27\" IPS FHD 75Hz","category":"monitors","brand":"AOC","price":119,"size":27,"panel":"IPS","hz":75,"res":"1920x1080","specs":...
+  call      get_product({"sku":"4212349"})
+            -> {"sku":"4212349","name":"Philips 275E1S 27\" IPS QHD 75Hz","category":"monitors","brand":"Philips","price":199,"size":27,"panel":"IPS","hz":75,"res":"2560x1440"...
+  reason    best value under 250: Philips 275E1S 27" IPS QHD 75Hz (2560x1440, IPS, 75Hz) at 199 EUR
+  call      update_cart({"sku":"4212349"})
+            -> {"error":"confirmation required","confirm":true,"tool":"update_cart","input":{"sku":"4212349","qty":1}}
+  CONFIRM   Plaisio wants to run update_cart for Philips 275E1S 27" IPS QHD 75Hz. Allow?
+  user      yes
+  call      update_cart({"sku":"4212349"})
+            -> {"ok":true,"cart":[{"sku":"4212349","qty":1}],"total":199}
+
+  done in 70 ms, 8 tool calls, 5,392 bytes over the wire
+  legacy: 6 HTML pages minimum, 117,919 bytes, plus a cookie wall and a click-through per page
+  ratio: 21.9x fewer bytes, and none of them need parsing
+
+TASK 2  "Can I get a PAX 200 frame delivered to 15236 before Saturday, and what will it cost? If not, hold one at Kifisia."  (http://localhost:4002)
+
+  discover  http://localhost:4002/.well-known/agents.txt  ->  MCP at http://localhost:4002/mcp
+  call      search_catalog({"query":"pax 200"})
+            -> {"products":[{"article":"902.145.63","name":"PAX Wardrobe frame 200x58x236 white","price":240,"weightKg":62}]}
+  call      get_delivery_options({"postcode":"15236","articles":["902.145.63"]})
+            -> {"postcode":"15236","zone":"attica","totalWeightKg":62,"feeEur":59,"slots":["2026-10-02","2026-10-03","2026-10-04"]}
+  reason    earliest slot 2026-10-02, Saturday is 2026-10-03: delivery works
+  answer    Yes. 59 EUR delivery, earliest 2026-10-02.
+
+  done, 2 tool calls
+
+TASK 3  "Is the ThinkPad E14 in stock at Cosmodata, and what's the router that goes with it?"  (http://localhost:4003)
+
+  discover  http://localhost:4003/.well-known/agents.txt  ->  MCP at http://localhost:4003/mcp
+  tools     search_catalog, get_product, check_stock, update_cart, get_cart   (generated from 4 checkboxes, no code written by the merchant)
+  call      search_catalog({"query":"thinkpad e14"})
+            -> {"products":[{"id":"CD-1001","name":"Lenovo ThinkPad E14 Gen 6 Ryzen 5 16GB 512GB","price":799}]}
+  call      check_stock({"id":"CD-1001"})
+            -> {"id":"CD-1001","stock":3,"leadDays":0}
+  call      search_catalog({"query":"router"})
+            -> {"products":[{"id":"CD-1003","name":"TP-Link Archer AX55 WiFi 6 router","price":69}]}
+
+  done, 4 tool calls
+
+TASK 4  "I land in Heraklion 10 October, need an automatic for 5 days, budget 40 a day, deliver to the airport"  (http://localhost:4004)
+
+  discover  http://localhost:4004/.well-known/agents.txt  ->  MCP at http://localhost:4004/mcp
+  call      search_catalog({"area":"crete","from":"2026-10-10","to":"2026-10-15","gearbox":"automatic","maxDayRate":40})
+            -> {"count":1,"cars":[{"id":"SYN-005","car":"Hyundai i10 2022","gearbox":"automatic","fuel":"petrol","seats":4,"dayRate":27,"ownerRating":4.6}]}
+  call      get_quote({"carId":"SYN-005","from":"2026-10-10","to":"2026-10-15"})
+            -> {"carId":"SYN-005","car":"Hyundai i10","from":"2026-10-10","to":"2026-10-15","days":5,"dayRate":27,"base":135,"discountPct":5,"delivery":10,"insurance":30,"tota...
+  reason    Hyundai i10 2022, 5 days, all-in 168 EUR incl. delivery and insurance, deposit 150
+  CONFIRM   Sync wants to book Hyundai i10 2022 2026-10-10 to 2026-10-15 for 168 EUR and charge a 150 EUR deposit. Allow?
+  user      yes
+  call      create_booking({"carId":"SYN-005","from":"2026-10-10","to":"2026-10-15","deliveryAddress":"Heraklion Airport arrivals"})
+            -> {"ok":true,"ref":"SYNC-24000","car":"Hyundai i10","owner":"Anna V.","from":"2026-10-10","to":"2026-10-15","deliveryAddress":"Heraklion Airport arrivals","total"...
+  answer    Booked Hyundai i10 from Anna V., ref SYNC-24000, delivered to the airport. Free cancellation until 2026-10-10.
+
+  done, 3 tool calls
+
+TASK 5  "Apply for me to any remote backend role at Acme paying at least 60k. Use my CV on file."  (http://localhost:4005)
+
+  discover  http://localhost:4005/.well-known/agents.txt  ->  MCP at http://localhost:4005/mcp
+  call      search_catalog({"query":"backend","remote":true,"minSalary":60000})
+            -> {"count":1,"jobs":[{"id":"J-3101","title":"Senior Backend Engineer (Go)","department":"Engineering","location":"Athens, GR","remote":true,"type":"Full-time","sa...
+  call      get_job({"id":"J-3101"})
+            -> {"id":"J-3101","title":"Senior Backend Engineer (Go)","dept":"Engineering","location":"Athens, GR","remote":true,"type":"Full-time","salaryMin":55000,"salaryMax...
+  reason    Senior Backend Engineer (Go): 55000-75000 EUR, remote, needs Go, PostgreSQL, Kubernetes. Matches.
+  CONFIRM   Acme Careers wants to submit an application for Senior Backend Engineer (Go) with your CV and contact details. Allow?
+  user      yes
+  call      submit_application({"jobId":"J-3101","fullName":"Takis K.","email":"takis@example.com","resume":"file:cv-2026.pdf","answers":{"rightToWorkEU":true,"noticePeriodWeeks":4,"expectedSalary":70000}})
+            -> {"ok":true,"applicationId":"APP-88000","job":"Senior Backend Engineer (Go)","stage":"Applied","confirmationSentTo":"takis@example.com"}
+  call      get_application_status({"applicationId":"APP-88000"})
+            -> {"applicationId":"APP-88000","job":"Senior Backend Engineer (Go)","stage":"Applied","submittedAt":"2026-09-30"}
+  answer    Applied to Senior Backend Engineer (Go). Reference APP-88000, confirmation sent to takis@example.com.
+
+  done, 4 tool calls

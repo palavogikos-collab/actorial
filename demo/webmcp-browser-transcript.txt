@@ -1,0 +1,4 @@
+  registered via navigator.modelContext: searchProducts, getProduct, checkStoreStock, addToCart, getCart
+  searchProducts -> {"result":{"count":4,"products":[{"sku":"4212345","name":"LG 27MP450-B 27\" IPS FHD 75Hz","brand":"LG","price":149.9,"ca...
+  browser  PROMPT: Agent wants to run addToCart with {"sku":"4212349"}. Allow?
+  addToCart      -> {"result":{"ok":true,"cart":[{"sku":"4212349","qty":1},{"sku":"4212349","qty":1},{"sku":"4212349","qty":1}],"total":597}}

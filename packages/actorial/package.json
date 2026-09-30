@@ -1,0 +1,9 @@
+{
+  "name": "actorial",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "One config, four agent surfaces: WebMCP, MCP, agents.txt/json, OpenAPI. Zero dependencies.",
+  "exports": { ".": "./src/index.js", "./adapters/shop-platform": "./src/adapters/shop-platform.js", "./adapters/shopify": "./src/adapters/shopify.js" },
+  "bin": { "actorial": "./bin/actorial.js" },
+  "license": "MIT"
+}

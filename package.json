@@ -1,0 +1,17 @@
+{
+  "name": "actorial-monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "sites": "node demo/run-sites.js",
+    "demo": "node demo/agent.js",
+    "check": "node packages/actorial/bin/actorial.js check"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}

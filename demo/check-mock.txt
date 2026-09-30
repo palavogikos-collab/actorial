@@ -1,0 +1,12 @@
+
+actorial check http://localhost:4001
+
+  PASS  agents.txt               25  200, 305 bytes
+  PASS  agents.json              15  200, 1024 bytes
+  PASS  llms.txt                 15  200, 629 bytes
+  PASS  openapi                  10  200, 2635 bytes
+  PASS  mcp endpoint             20  200, 1569 bytes
+  PASS  webmcp script on page    15  200, 23388 bytes
+
+  score: 100/100  agent-ready
+

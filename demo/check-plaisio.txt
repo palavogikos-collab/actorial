@@ -1,0 +1,12 @@
+
+actorial check https://www.plaisio.gr
+
+  FAIL  agents.txt               25  403, 406 bytes
+  FAIL  agents.json              15  403, 405 bytes
+  FAIL  llms.txt                 15  403, 380 bytes
+  FAIL  openapi                  10  403, 382 bytes
+  FAIL  mcp endpoint             20  403, 371 bytes
+  FAIL  webmcp script on page    15  403, 366 bytes
+
+  score: 0/100  built for eyes, not agents
+

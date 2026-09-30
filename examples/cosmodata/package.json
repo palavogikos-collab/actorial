@@ -1,0 +1,1 @@
+{ "name": "example-cosmodata", "private": true, "type": "module", "dependencies": { "actorial": "*" }, "scripts": { "start": "node server.js" } }
